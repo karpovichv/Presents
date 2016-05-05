@@ -1,0 +1,8 @@
+#Language file
+place: "&6Chest placed!"
+in-use: "&6This chest is already in use!"
+full-inventory: "&6Your inventory is full!"
+cooldown: "&6You have already used this chest recently, try again later!"
+remove:
+  success: "&6Chest is successfully removed!"
+  no-permission: "&6You don't have permission to remove this chest!"

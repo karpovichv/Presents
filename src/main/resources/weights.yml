@@ -1,0 +1,11 @@
+#Here you can write down the weights for items (IDs)
+#The item with higher weight has more chance to be randomly chosen
+#min and max specify how much of the item player can get (chosen randomly)
+"357":
+  weight: 20
+  min: 8
+  max: 16
+"354":
+  weight: 15
+  min: 1
+  max: 1

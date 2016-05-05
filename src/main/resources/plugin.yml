@@ -1,0 +1,13 @@
+name: Presents
+main: net.tee7even.presents.Presents
+version: "0.1"
+author: Tee7even
+api: ["1.0.0"]
+permissions:
+  presents:
+    default: op
+    description: "Lets you to place and remove a chest"
+commands:
+  placechest:
+    description: "Places a chest"
+    permission: presents

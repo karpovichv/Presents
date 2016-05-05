@@ -1,0 +1,3 @@
+#Cooldown feature doesn't let player open a chest more than once in cooldown-time seconds
+cooldown: true
+cooldown-time: 300
