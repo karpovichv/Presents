@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Tee7even on 05.05.2016.
+ * @author Tee7even
  */
 public class YamlProvider implements DataProvider
 {
-    Config chestConfig;
+    private Config chestConfig;
 
     public YamlProvider()
     {

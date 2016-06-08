@@ -8,7 +8,7 @@ import net.tee7even.presents.Chest;
 import net.tee7even.presents.texttag.TextTagManager;
 
 /**
- * Created by Tee7even on 25.04.2016.
+ * @author Tee7even
  */
 public class SecondStepTask extends Task
 {

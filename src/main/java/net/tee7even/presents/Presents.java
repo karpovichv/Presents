@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.*;
 
 /**
- * Created by Tee7even on 24.04.2016.
+ * @author Tee7even
  */
 public class Presents extends PluginBase
 {

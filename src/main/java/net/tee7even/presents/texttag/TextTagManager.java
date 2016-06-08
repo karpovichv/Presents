@@ -11,7 +11,7 @@ import cn.nukkit.network.protocol.RemoveEntityPacket;
 import java.util.HashMap;
 
 /**
- * Created by Tee7even on 25.04.2016.
+ * @author Tee7even
  */
 public class TextTagManager
 {

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Tee7even on 25.04.2016.
+ * @author Tee7even
  */
 public class Chest
 {
@@ -126,11 +126,10 @@ public class Chest
 
     public boolean blockEquals(Block block)
     {
-        return this.block.equals(block);
+        return this.block != null && this.block.equals(block);
     }
 
-    public boolean itemEntityEquals(EntityItem itemEntity)
-    {
-        return this.itemEntity.equals(itemEntity);
+    public boolean itemEntityEquals(EntityItem itemEntity) {
+        return this.itemEntity != null && this.itemEntity.equals(itemEntity);
     }
 }

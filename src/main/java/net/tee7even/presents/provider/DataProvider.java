@@ -5,7 +5,7 @@ import net.tee7even.presents.Chest;
 import java.util.List;
 
 /**
- * Created by Tee7even on 05.05.2016.
+ * @author Tee7even
  */
 public interface DataProvider
 {

@@ -9,7 +9,7 @@ import cn.nukkit.event.player.PlayerJoinEvent;
 import net.tee7even.presents.texttag.TextTagManager;
 
 /**
- * Created by Tee7even on 25.04.2016.
+ * @author Tee7even
  */
 public class EventListener implements Listener
 {

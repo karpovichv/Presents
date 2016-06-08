@@ -13,7 +13,7 @@ import net.tee7even.presents.Chest;
 import java.util.Random;
 
 /**
- * Created by Tee7even on 24.04.2016.
+ * @author Tee7even
  */
 public class FirstStepTask extends Task
 {
@@ -43,7 +43,7 @@ public class FirstStepTask extends Task
         this.chest.firstStepResult(itemEntity);
     }
 
-    public Entity shootItem(Level level, Vector3 source, Vector3 motion)
+    private Entity shootItem(Level level, Vector3 source, Vector3 motion)
     {
         Entity itemEntity = Entity.createEntity("Item", level.getChunk((int)source.x >> 4, (int)source.z >> 4, false), new CompoundTag()
                 .put("Pos", new ListTag<DoubleTag>("Pos")
