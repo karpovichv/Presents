@@ -1,6 +1,7 @@
 package net.tee7even.presents;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -90,8 +91,8 @@ public class Presents extends PluginBase
         if(command.getName().equals("placechest"))
         {
             int[] faces = {4, 2, 5, 3};
-            this.chests.add(new Chest(player.x, player.y, player.z, player.level, faces[player.getDirection()]));
-            this.dataProvider.saveChest(player.x, player.y, player.z, player.level.getName(), faces[player.getDirection()]);
+            this.chests.add(new Chest(player.getFloorX(), player.getFloorY(), player.getFloorZ(), player.level, faces[player.getDirection()]));
+            this.dataProvider.saveChest(player.getFloorX(), player.getFloorY(), player.getFloorZ(), player.level.getName(), faces[player.getDirection()]);
 
             player.sendMessage(this.getMessage("place"));
         }

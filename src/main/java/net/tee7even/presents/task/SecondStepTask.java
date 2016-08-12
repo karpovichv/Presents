@@ -28,7 +28,7 @@ public class SecondStepTask extends Task
     @Override
     public void onRun(int currentTick)
     {
-        int textTagId = TextTagManager.getInstance().setTextTag(this.item.getName(), this.block.getLevel().getName(), this.block.x + 0.5, this.block.y + 1.2, this.block.z + 0.5);
+        int textTagId = TextTagManager.getInstance().setTextTag(this.item.getName(), this.block.getLevel(), this.block.x + 0.5, this.block.y, this.block.z + 0.5);
 
         if(this.player.getInventory().canAddItem(this.item))
         {

@@ -4,11 +4,12 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.data.EntityMetadata;
-import cn.nukkit.entity.item.EntityItem;
-import cn.nukkit.network.protocol.AddEntityPacket;
+import cn.nukkit.level.Level;
+import cn.nukkit.network.protocol.AddPlayerPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * @author Tee7even
@@ -36,7 +37,7 @@ public class TextTagManager
             this.eid = Entity.entityCount++;
             this.levelName = levelName;
             this.x = x;
-            this.y = y;
+            this.y = y - 0.42;
             this.z = z;
         }
     }
@@ -51,16 +52,17 @@ public class TextTagManager
         return instance;
     }
 
-    public int setTextTag(String text, String levelName, double x, double y, double z)
+    public int setTextTag(String text, Level level, double x, double y, double z)
     {
-        TextTag textTag = new TextTag(text, levelName, x, y, z);
+        TextTag textTag = new TextTag(text, level.getName(), x, y, z);
 
-        AddEntityPacket packet = new AddEntityPacket();
+        AddPlayerPacket packet = new AddPlayerPacket();
+        packet.uuid = UUID.randomUUID();
+        packet.username = "";
         packet.eid = textTag.eid;
-        packet.type = EntityItem.NETWORK_ID;
-        packet.x = (float)x;
-        packet.y = (float)y;
-        packet.z = (float)z;
+        packet.x = (float)textTag.x;
+        packet.y = (float)textTag.y;
+        packet.z = (float)textTag.z;
         packet.speedX = 0;
         packet.speedY = 0;
         packet.speedZ = 0;
@@ -68,14 +70,14 @@ public class TextTagManager
         packet.pitch = 0;
         packet.metadata = new EntityMetadata()
                 .putByte(Entity.DATA_FLAGS, 1 << Entity.DATA_FLAG_INVISIBLE)
-                .putShort(Entity.DATA_AIR, 300)
-                .putString(Entity.DATA_NAMETAG, text)
+                .putString(Entity.DATA_NAMETAG, textTag.text)
                 .putBoolean(Entity.DATA_SHOW_NAMETAG, true)
                 .putBoolean(Entity.DATA_SILENT, true)
-                .putBoolean(Entity.DATA_NO_AI, true);
+                .putBoolean(Entity.DATA_NO_AI, true)
+                .putLong(Entity.DATA_LEAD_HOLDER, -1)
+                .putByte(Entity.DATA_LEAD, 0);
 
-        for(Player player : Server.getInstance().getOnlinePlayers().values())
-            player.dataPacket(packet);
+        level.addChunkPacket((int)textTag.x >> 4, (int)textTag.z >> 4, packet);
 
         textTags.put(textTagCount, textTag);
         return textTagCount++;
@@ -97,8 +99,9 @@ public class TextTagManager
 
     public void sendTextTags(Player player)
     {
-        AddEntityPacket packet = new AddEntityPacket();
-        packet.type = EntityItem.NETWORK_ID;
+        AddPlayerPacket packet = new AddPlayerPacket();
+        packet.uuid = UUID.randomUUID();
+        packet.username = "";
         packet.speedX = 0;
         packet.speedY = 0;
         packet.speedZ = 0;
@@ -106,10 +109,11 @@ public class TextTagManager
         packet.pitch = 0;
         packet.metadata = new EntityMetadata()
                 .putByte(Entity.DATA_FLAGS, 1 << Entity.DATA_FLAG_INVISIBLE)
-                .putShort(Entity.DATA_AIR, 300)
                 .putBoolean(Entity.DATA_SHOW_NAMETAG, true)
                 .putBoolean(Entity.DATA_SILENT, true)
-                .putBoolean(Entity.DATA_NO_AI, true);
+                .putBoolean(Entity.DATA_NO_AI, true)
+                .putLong(Entity.DATA_LEAD_HOLDER, -1)
+                .putByte(Entity.DATA_LEAD, 0);
 
         for(TextTag textTag : textTags.values())
         {
