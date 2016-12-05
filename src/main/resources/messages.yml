@@ -1,4 +1,7 @@
-#Language file
+#Language file version, do not modify
+version: 1
+#All the messages of the Presents plugin
+#If you are willing to change them, set messages-autoupdate to false in config.yml
 place: "&6Chest placed!"
 in-use: "&6This chest is already in use!"
 full-inventory: "&6Your inventory is full!"

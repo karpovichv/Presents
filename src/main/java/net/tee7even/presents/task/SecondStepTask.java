@@ -5,20 +5,18 @@ import cn.nukkit.block.Block;
 import cn.nukkit.item.Item;
 import cn.nukkit.scheduler.Task;
 import net.tee7even.presents.Chest;
-import net.tee7even.presents.texttag.TextTagManager;
+import net.tee7even.presents.utils.TextTagManager;
 
 /**
  * @author Tee7even
  */
-public class SecondStepTask extends Task
-{
+public class SecondStepTask extends Task {
     private Chest chest;
     private Block block;
     private Item item;
     private Player player;
 
-    public SecondStepTask(Chest chest, Block block, Item item, Player player)
-    {
+    public SecondStepTask(Chest chest, Block block, Item item, Player player) {
         this.chest = chest;
         this.block = block;
         this.item = item;
@@ -26,15 +24,13 @@ public class SecondStepTask extends Task
     }
 
     @Override
-    public void onRun(int currentTick)
-    {
-        int textTagId = TextTagManager.getInstance().setTextTag(this.item.getName(), this.block.getLevel(), this.block.x + 0.5, this.block.y, this.block.z + 0.5);
+    public void onRun(int currentTick) {
+        int textTagId = TextTagManager.setTextTag(item.getName(), block.getLevel(), block.x + 0.5, block.y + 1, block.z + 0.5);
 
-        if(this.player.getInventory().canAddItem(this.item))
-        {
-            this.player.getInventory().addItem(this.item);
+        if (player.getInventory().canAddItem(item)) {
+            player.getInventory().addItem(item);
         }
 
-        this.chest.secondStepResult(textTagId);
+        chest.setTextTagId(textTagId);
     }
 }

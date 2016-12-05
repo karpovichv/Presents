@@ -17,7 +17,8 @@ import cn.nukkit.network.protocol.BlockEventPacket;
 import net.tee7even.presents.task.FirstStepTask;
 import net.tee7even.presents.task.SecondStepTask;
 import net.tee7even.presents.task.ThirdStepTask;
-import net.tee7even.presents.texttag.TextTagManager;
+import net.tee7even.presents.utils.Message;
+import net.tee7even.presents.utils.TextTagManager;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -26,8 +27,7 @@ import java.util.Map;
 /**
  * @author Tee7even
  */
-public class Chest
-{
+public class Chest {
     private BlockChest block;
 
     private Entity itemEntity;
@@ -36,95 +36,79 @@ public class Chest
     private boolean inUse = false;
     private Map<String, Long> cooldownTimes = new HashMap<>();
 
-    public Chest(double x, double y, double z, Level level, int facing)
-    {
-        this.block = new BlockChest(facing);
-        this.block.x = x;
-        this.block.y = y;
-        this.block.z = z;
-        this.block.level = level;
-        level.setBlock(new Vector3(x, y, z), this.block);
-
-        new BlockEntityChest(level.getChunk((int)x >> 4, (int)z >> 4), new CompoundTag("")
-                .putList(new ListTag<>("Items"))
-                .putString("id", BlockEntity.CHEST)
-                .putInt("x", (int)x)
-                .putInt("y", (int)y)
-                .putInt("z", (int)z));
+    public Chest(double x, double y, double z, Level level, int facing) {
+        block = new BlockChest(facing);
+        block.x = x;
+        block.y = y;
+        block.z = z;
+        block.level = level;
+        level.setBlock(block, block, true, true);
     }
 
-    public void open(Player player, Item item)
-    {
-        if(this.inUse)
-        {
-            player.sendMessage(Presents.getInstance().getMessage("in-use"));
+    public void open(Player player, Item item) {
+        if (this.inUse) {
+            Message.send(player, "in-use");
             return;
         }
 
-        if(!player.getInventory().canAddItem(item))
-        {
-            player.sendMessage(Presents.getInstance().getMessage("full-inventory"));
+        if (!player.getInventory().canAddItem(item)) {
+            Message.send(player, "full-inventory");
             return;
         }
 
-        if(Presents.getInstance().getConfig().getBoolean("cooldown", true))
-        {
+        if (Presents.getPlugin().getConfig().getBoolean("cooldown", true)) {
             long unixNow = Instant.now().getEpochSecond();
-            if(this.cooldownTimes.containsKey(player.getName()))
-            {
-                if(unixNow - this.cooldownTimes.get(player.getName()) < Presents.getInstance().getConfig().getInt("cooldown-time", 300))
-                {
-                    player.sendMessage(Presents.getInstance().getMessage("cooldown"));
+            if (cooldownTimes.containsKey(player.getName())) {
+                if (unixNow - cooldownTimes.get(player.getName()) < Presents.getPlugin().getConfig().getInt("cooldown-time", 300)) {
+                    Message.send(player, "cooldown");
                     return;
                 }
             }
 
-            this.cooldownTimes.put(player.getName(), unixNow);
+            cooldownTimes.put(player.getName(), unixNow);
         }
 
         BlockEventPacket packet = new BlockEventPacket();
-        packet.x = (int)this.block.x;
-        packet.y = (int)this.block.y;
-        packet.z = (int)this.block.z;
+        packet.x = (int)block.x;
+        packet.y = (int)block.y;
+        packet.z = (int)block.z;
         packet.case1 = 1;
         packet.case2 = 2;
-        this.block.getLevel().addChunkPacket((int)this.block.x >> 4, (int)this.block.z >> 4, packet);
+        block.getLevel().addChunkPacket((int)block.x >> 4, (int)block.z >> 4, packet);
 
-        this.inUse = true;
-        Server.getInstance().getScheduler().scheduleDelayedTask(new FirstStepTask(this, this.block, item), 5);
-        Server.getInstance().getScheduler().scheduleDelayedTask(new SecondStepTask(this, this.block, item, player), 10);
+        inUse = true;
+        Server.getInstance().getScheduler().scheduleDelayedTask(new FirstStepTask(this, block, item), 5);
+        Server.getInstance().getScheduler().scheduleDelayedTask(new SecondStepTask(this, block, item, player), 10);
         Server.getInstance().getScheduler().scheduleDelayedTask(new ThirdStepTask(this), 200);
     }
 
-    public void firstStepResult(Entity itemEntity)
-    {
+    public void setItemEntity(Entity itemEntity) {
         this.itemEntity = itemEntity;
     }
 
-    public void secondStepResult(int textTagId)
-    {
+    public void setTextTagId(int textTagId) {
         this.textTagId = textTagId;
     }
 
-    public void close()
-    {
-        if(!this.inUse) return;
+    public void close() {
+        if (!inUse) {
+            return;
+        }
 
-        TextTagManager.getInstance().removeTextTag(this.textTagId);
-        this.itemEntity.kill();
-        this.inUse = false;
+        TextTagManager.removeTextTag(textTagId);
+        itemEntity.kill();
+        inUse = false;
 
         BlockEventPacket packet = new BlockEventPacket();
-        packet.x = (int)this.block.x;
-        packet.y = (int)this.block.y;
-        packet.z = (int)this.block.z;
+        packet.x = (int)block.x;
+        packet.y = (int)block.y;
+        packet.z = (int)block.z;
         packet.case1 = 1;
         packet.case2 = 0;
-        block.getLevel().addChunkPacket((int)this.block.x >> 4, (int)this.block.z >> 4, packet);
+        block.getLevel().addChunkPacket((int)block.x >> 4, (int)block.z >> 4, packet);
     }
 
-    public boolean blockEquals(Block block)
-    {
+    public boolean blockEquals(Block block) {
         return this.block != null && this.block.equals(block);
     }
 

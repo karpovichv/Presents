@@ -1,3 +1,11 @@
+#Configuration version, do not modify
+version: 1
 #Cooldown feature doesn't let player open a chest more than once in cooldown-time seconds
 cooldown: true
 cooldown-time: 300
+#If set to true, plugin will automatically update messages, if there are any changes,
+#if set to false, there will be a warning in the console
+messages-autoupdate: false
+#List of particles that can appear when opening the chest, chosen randomly
+#Possible values: "happy-villager", "angry-villager", "hearts"
+particles: ["happy-villager", "angry-villager", "hearts"]
