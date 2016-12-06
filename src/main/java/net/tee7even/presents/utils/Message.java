@@ -1,5 +1,6 @@
 package net.tee7even.presents.utils;
 
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
@@ -26,7 +27,7 @@ public class Message {
 
     private static void checkVersion(Config messagesConfig) {
         Config internalMessages = new Config();
-        internalMessages.load(Message.class.getResourceAsStream("messages.yml"));
+        internalMessages.load(Message.class.getResourceAsStream("/messages.yml"));
         if (messagesConfig.getInt("version", -1) != internalMessages.getInt("version")) {
             if (Presents.getPlugin().getConfig().getBoolean("messages-autoupdate", false)) {
                 Presents.getPlugin().saveResource("messages.yml", true);
@@ -36,7 +37,6 @@ public class Message {
                         "Back it up, if needed, and delete. It will be replaced by a new one on start.");
             }
         }
-        messagesConfig.remove("version");
     }
 
     public static String get(String key, String... replacements) {
