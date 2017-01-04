@@ -6,7 +6,7 @@
 
     <groupId>net.tee7even</groupId>
     <artifactId>Presents</artifactId>
-    <version>1.2</version>
+    <version>1.5</version>
     <build>
         <plugins>
             <plugin>

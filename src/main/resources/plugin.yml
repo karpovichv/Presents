@@ -1,6 +1,6 @@
 name: Presents
 main: net.tee7even.presents.Presents
-version: "1.4"
+version: "1.5"
 author: Tee7even
 api: ["1.0.0"]
 permissions:

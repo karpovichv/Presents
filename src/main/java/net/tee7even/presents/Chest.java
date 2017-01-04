@@ -43,6 +43,13 @@ public class Chest {
         block.z = z;
         block.level = level;
         level.setBlock(block, block, true, true);
+
+        new BlockEntityChest(level.getChunk((int)x >> 4, (int)z >> 4), new CompoundTag("")
+                .putList(new ListTag<>("Items"))
+                .putString("id", BlockEntity.CHEST)
+                .putInt("x", (int)x)
+                .putInt("y", (int)y)
+                .putInt("z", (int)z));
     }
 
     public void open(Player player, Item item) {
